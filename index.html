@@ -9,6 +9,8 @@
         integrity="sha384-vp86vTRFVJgpjF9jiIGPEEqYqlDwgyBgEF109VFjmqGmIY/Y4HV4d3Gp2irVfcrp" crossorigin="anonymous">
 
     <style>
+        @import url('https://fonts.googleapis.com/css2?&family=Roboto:wght@700&family=Dancing+Script:wght@500&display=swap');
+
         * {
             margin: 0;
             padding: 0;
@@ -21,7 +23,6 @@
         }
 
         .mainDiv {
-            width: 100vw;
             height: 100vh;
             display: grid;
             place-items: center;
@@ -38,7 +39,7 @@
         .quotes {
             padding: 4rem 3rem;
             background-color: white;
-            box-shadow: 0 2px 5px 0px rgb(0, 0, 0, 0.3);
+            box-shadow: 0 0.2rem 0.5rem 0 rgb(0, 0, 0, 0.3);
             border-radius: 0.2rem;
             min-height: 20rem;
         }
@@ -56,7 +57,7 @@
             border-top: 50px solid transparent;
             border-right: 50px solid #ABC7DE;
             border-bottom: 50px solid transparent;
-            rotate: 135deg;
+            transform: rotate(135deg);
             margin-top: -32.5px;
             margin-right: -7.5px;
 
@@ -74,12 +75,33 @@
             padding-left: 17px;
         }
 
+        .twitter-logo:hover {
+            cursor: pointer;
+            animation: rot 1s linear;
+        }
+
+        @keyframes rot {
+            from {
+                transform: rotate(0deg);
+            }
+
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
         .quote-text {
+            font-family: 'Dancing Script', cursive;
+            color: gray;
+            font-size: 2.5rem;
             padding-left: 10px;
             padding-top: 30px;
         }
 
         .author {
+            font-family: 'Roboto', sans-serif;
+            font-size: 1rem;
+            color: gray;
             float: right;
             padding-top: 30px;
             padding-bottom: 20px;
@@ -89,22 +111,29 @@
             display: flex;
             flex-direction: row;
             justify-content: space-between;
+            width: 100%;
         }
 
         .quoteBtn {
             width: 100%;
-            padding: 10px;
+            padding: 1rem;
             border: none;
             outline: none;
             background-color: #086aa7;
             color: white;
+            cursor: pointer;
+            transition: 1s ease;
+        }
+
+        .quoteBtn:hover {
+            background-color: #032d47;
         }
 
         #previous {
-            border-right: solid 1px white;
+            border-right: solid 0.1rem white;
         }
     </style>
-    <title>Document</title>
+    <title>Tweet Quote</title>
 </head>
 
 <body>
@@ -113,29 +142,19 @@
         <div class="innerDiv">
             <div class='ribbon'></div>
             <div class="twitter">
-                <img class="twitter-logo" src="assets/twitter-logo.png" alt="">
+                <img class="twitter-logo" title="Tweet Now" onclick="tweetNow()" src="assets/twitter-logo.png" alt="">
             </div>
 
             <div class="quotes">
                 <span><img class="quotationMarks" src="assets/quotation-marks.png" alt=""></span>
-                <div class="quote-text">
-                    Here is an exampe quote.Here is an exampe quote.Here is an exampe quote.Here is an exampe quote.Here
-                    is an exampe quote.Here is an exampe quote.Here is an exampe quote.Here is an exampe quote.Here is
-                    an exampe quote.Here is an exampe quote.Here is an exampe quote.Here is an exampe quote.Here is an
-                    exampe quote.Here is an exampe quote.Here is an exampe quote.Here is an exampe quote.Here is an
-                    exampe quote.Here is an exampe quote.Here is an exampe quote.Here is an exampe quote.Here is an
-                    exampe quote.Here is an exampe quote.Here is an exampe quote.Here is an exampe quote.Here is an
-                    exampe quote.Here is an exampe quote.Here is an exampe quote.Here is an exampe quote.Here is an
-                    exampe quote.Here is an exampe quote.Here is an exampe quote.Here is an exampe quote.Here is an
-                    exampe quote.Here is an exampe quote.Here is an exampe quote.Here is an exampe quote.
+                <div class="quote-text" id="quote-text">
                 </div>
-                <div class="author">
-                    Exap author
+                <div class="author" id="author">
                 </div>
             </div>
             <div class="buttons">
-                <button class="quoteBtn" id="previous">Previous Quote</button>
-                <button class="quoteBtn" id="next">New Quote</button>
+                <button class="quoteBtn" id="previous" onclick="quote('previous')">Previous Quote</button>
+                <button class="quoteBtn" id="next" onclick="quote('new')">New Quote</button>
             </div>
         </div>
     </div>
@@ -144,22 +163,35 @@
     <script>
         let realData = ""
         let quoteNumber = 0
+        const quoteText = document.getElementById('quote-text')
+        const author = document.getElementById('author')
 
         const quote = (val) => {
-            val == 'new' ? quoteNumber++ : quoteNumber--
+            if (val == 'new' && quoteNumber < realData.length) {
+                quoteNumber++
+            }
+            else if (val == 'previous' && quoteNumber > 0) {
+                quoteNumber--
+            }
+            quoteText.innerHTML = `${realData[quoteNumber].text}`
+            author.innerHTML = realData[quoteNumber].author ? `${realData[quoteNumber].author}` : 'By Unknown'
         }
         const getQuotes = async () => {
             const api = 'https://type.fit/api/quotes'
             try {
                 let data = await fetch(api)
                 realData = await data.json()
-                // console.log(realData)
-                getNewQuotes()
+                quoteText.innerHTML = `${realData[quoteNumber].text}`
+                author.innerHTML = realData[quoteNumber].author ? `${realData[quoteNumber].author}` : 'By Unknown'
             } catch (error) {
-
+                console.warn(error)
             }
         }
 
+        const tweetNow = () => {
+            let tweetPost = `https://twitter.com/intent/tweet?text=${realData[quoteNumber].text}`
+            window.open(tweetPost)
+        }
         getQuotes()
     </script>
 </body>
