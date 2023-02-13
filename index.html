@@ -132,6 +132,70 @@
         #previous {
             border-right: solid 0.1rem white;
         }
+
+        @media screen and (max-width:700px) {
+            .mainDiv {
+                height: 100vh;
+                display: grid;
+                place-items: center;
+            }
+
+            .ribbon {
+                display: none;
+            }
+
+            .innerDiv {
+                width: 100%;
+                background-color: #1DA1F2;
+                padding: 3rem 0rem;
+                border-radius: 0.2rem;
+            }
+
+            .twitter-logo {
+                padding: 0.5rem;
+                margin-right: 1rem !important;
+                margin-top: 1rem !important;
+                background-color: #ABC7DE;
+                border-radius: 50px;
+                box-shadow: 0 0.2rem 0.5rem 0 rgb(0, 0, 0, 0.3);
+            }
+
+            .quotes {
+                padding: 4rem 3rem;
+                background-color: white;
+                box-shadow: 0 0.2rem 0.5rem 0 rgb(0, 0, 0, 0.3);
+                border-radius: 0.2rem;
+                min-height: 20rem;
+            }
+
+            .quote-text {
+                font-size: 2rem;
+            }
+
+            .quotationMarks {
+                width: 2rem;
+                height: 1.5rem;
+            }
+        }
+
+        @media only screen and (min-width: 701px) and (max-width: 1100px) {
+            .mainDiv {
+                height: 100vh;
+                display: grid;
+                place-items: center;
+            }
+
+            .innerDiv {
+                width: 80vw;
+                background-color: #1DA1F2;
+                padding: 2rem 4rem;
+                border-radius: 0.2rem;
+            }
+
+            .quote-text {
+                font-size: 2rem;
+            }
+        }
     </style>
     <title>Tweet Quote</title>
 </head>
